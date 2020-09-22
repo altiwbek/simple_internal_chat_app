@@ -40,6 +40,11 @@
       <ul class="nav navbar-nav ml-auto">
         <% if current_user.present? %>
           <li class="nav-item">
+            <%= link_to edit_user_registration_path, class: 'nav-link' do %>
+              <span class="fas fa-user-edit"></span> Edit
+            <% end %>
+          </li>
+          <li class="nav-item">
             <%= link_to destroy_user_session_path, class: 'nav-link', method: :delete do %>
               <span class="fas fa-sign-out-alt"></span> Sign Out
             <% end %>
