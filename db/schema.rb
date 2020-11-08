@@ -10,7 +10,54 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_21_180316) do
+ActiveRecord::Schema.define(version: 2020_11_08_063309) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
+  create_table "chat_admins", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "chat_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["chat_id"], name: "index_chat_admins_on_chat_id"
+    t.index ["user_id"], name: "index_chat_admins_on_user_id"
+  end
+
+  create_table "chat_users", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "chat_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["chat_id"], name: "index_chat_users_on_chat_id"
+    t.index ["user_id"], name: "index_chat_users_on_user_id"
+  end
+
+  create_table "chats", force: :cascade do |t|
+    t.string "title"
+    t.text "description"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "message_read_reports", force: :cascade do |t|
+    t.bigint "message_id", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["message_id"], name: "index_message_read_reports_on_message_id"
+    t.index ["user_id"], name: "index_message_read_reports_on_user_id"
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.bigint "chat_id", null: false
+    t.bigint "user_id", null: false
+    t.text "text_content"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["chat_id"], name: "index_messages_on_chat_id"
+    t.index ["user_id"], name: "index_messages_on_user_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -31,4 +78,12 @@ ActiveRecord::Schema.define(version: 2020_09_21_180316) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "chat_admins", "chats"
+  add_foreign_key "chat_admins", "users"
+  add_foreign_key "chat_users", "chats"
+  add_foreign_key "chat_users", "users"
+  add_foreign_key "message_read_reports", "messages"
+  add_foreign_key "message_read_reports", "users"
+  add_foreign_key "messages", "chats"
+  add_foreign_key "messages", "users"
 end

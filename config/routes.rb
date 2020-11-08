@@ -10,4 +10,7 @@ Rails.application.routes.draw do
       post :disable_multi_factor_authentication, to: 'users/multi_factor_authentication#verify_disabled'
     end
   end
+  resources :chats
+  resources :messages
+  get '/search_users' => 'users#search', as: :search_users
 end

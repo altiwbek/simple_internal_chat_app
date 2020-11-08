@@ -1,4 +1,6 @@
+# frozen_string_literal: true
+
+# no doc
 class PagesController < ApplicationController
-  def index
-  end
+  def index; end
 end

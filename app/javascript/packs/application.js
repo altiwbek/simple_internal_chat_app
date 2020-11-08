@@ -9,6 +9,14 @@ require("@rails/ujs").start();
 require("turbolinks").start();
 require("@rails/activestorage").start();
 require("channels");
+require("jquery");
+require( 'select2' );
+require( 'select2/dist/js/i18n/en.js' );
+require("../chat/messages");
+require("../chat/search_users");
+
+import "select2/dist/css/select2.min.css";
+import "select2-theme-bootstrap4/dist/select2-bootstrap.min.css";
 
 
 // Uncomment to copy all static images under ../images to the output folder and reference
