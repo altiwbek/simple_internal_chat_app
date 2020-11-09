@@ -11,13 +11,20 @@ class Chat < ApplicationRecord
 
   accepts_nested_attributes_for :chat_users
 
-  scope :with_unread_messages, lambda {
-
+  scope :with_unread_messages_of, lambda { |user|
+    select(
+      'distinct chats.*, ('\
+      'select COUNT(messages.id) from messages '\
+      'left join message_read_reports on message_read_reports.message_id = messages.id '\
+      "where message_read_reports is null and messages.user_id != #{user.id} and messages.chat_id = chats.id "\
+      ') as unread_messages_count, '\
+      'coalesce( ( select messages.id from messages where  messages.chat_id = chats.id '\
+      ' order by messages.id desc limit 1 ), 0 ) as last_message_id '
+    ).order('last_message_id desc')
   }
 
   def listing_title(user)
-    p self
-    if users.size > 2
+    if users.length > 2
       title
     else
       opposite_to(user)&.email || user&.email
@@ -36,6 +43,6 @@ class Chat < ApplicationRecord
   end
 
   def opposite_to(user)
-    users.joins(:chat_users).where.not(chat_users: {user: user}).first
+    users.reject { |u| u.id == user.id }.first
   end
 end

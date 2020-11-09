@@ -4,13 +4,14 @@ class ChatsController < ApplicationController
   # GET /chats
   # GET /chats.json
   def index
-    @chats = current_user.chats
+    @chats = current_user.chats.with_unread_messages_of(current_user)
   end
 
   # GET /chats/1
   # GET /chats/1.json
   def show
-    @chats = current_user.chats
+    @chats = current_user.chats.with_unread_messages_of(current_user)
+                         .includes(:users).includes(:messages)
   end
 
   # GET /chats/new

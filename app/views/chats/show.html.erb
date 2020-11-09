@@ -17,11 +17,14 @@
 
           <div class="chat_list active_chat">
             <div class="chat_people">
-              <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+              <div class="chat_img">
+                <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
+              </div>
               <div class="chat_ib">
                 <h5>
                   <%= chat.listing_title(current_user) %>
-                  <span class="chat_date"><%= chat.created_at.strftime('%B %e, %Y') %></span>
+                  <span class="badge badge-warning"><%= chat.try(:unread_messages_count) %></span>
+                  <span class="chat_date"><%= chat.last_message&.created_at&.strftime('%B %e, %Y') %></span>
                 </h5>
                 <p><%= chat.last_message&.text_content %></p>
               </div>
