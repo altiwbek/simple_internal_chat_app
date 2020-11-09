@@ -6,8 +6,10 @@ class MessagesController < ApplicationController
     respond_to do |format|
       if @message.save
         format.json { render :show, status: :created, location: @message }
+        format.js {}
       else
         format.json { render json: @message.errors, status: :unprocessable_entity }
+        format.js
       end
     end
   end

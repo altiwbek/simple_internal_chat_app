@@ -18,9 +18,9 @@ class Chat < ApplicationRecord
       'left join message_read_reports on message_read_reports.message_id = messages.id '\
       "where message_read_reports is null and messages.user_id != #{user.id} and messages.chat_id = chats.id "\
       ') as unread_messages_count, '\
-      'coalesce( ( select messages.id from messages where  messages.chat_id = chats.id '\
-      ' order by messages.id desc limit 1 ), 0 ) as last_message_id '
-    ).order('last_message_id desc')
+      'coalesce( ( select messages.created_at from messages where  messages.chat_id = chats.id '\
+      ' order by messages.id desc limit 1 ), chats.created_at ) as last_message_created_at '
+    ).order('last_message_created_at desc')
   }
 
   def listing_title(user)

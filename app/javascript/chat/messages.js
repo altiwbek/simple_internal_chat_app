@@ -1,10 +1,5 @@
 
 $(document).on('turbolinks:load', function() {
-  console.log('turbolinks')
-  $('#new_message').on('submit', function(e, data, status, xhr){
-    console.log(e)
-    console.log(data)
-    console.log(status)
-    console.log(xhr)
-  })
+  var msg_history = document.getElementById('js-msg-history');
+  msg_history.scrollTop = msg_history.scrollHeight;
 })
