@@ -11,3 +11,10 @@ var msg_history = document.getElementById('js-msg-history');
 msg_history.appendChild(message_div);
 document.getElementById("message_text_content").value = null;
 msg_history.scrollTop = msg_history.scrollHeight;
+
+var chat_link = document.getElementById('js-chat-link-<%= @message.chat_id %>');
+var timeEl = chat_link.getElementsByClassName('chat_date')[0]
+timeEl.innerHTML = '<%= @message.created_at.strftime('%e.%m.%y %H:%M') %>'
+var lastMsg = chat_link.getElementsByClassName('last_message')[0]
+lastMsg.innerHTML = '<%= @message.text_content.html_safe %>'
+document.getElementById('js-chat-link-container').prepend(chat_link);

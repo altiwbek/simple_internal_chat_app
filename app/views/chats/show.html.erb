@@ -11,12 +11,12 @@
           </div>
         </div>
       </div>
-      <div class="inbox_chat scroll">
+      <div class="inbox_chat scroll" id="js-chat-link-container">
 
         <% @chats.each do |chat| %>
 
           <%= link_to chat do %>
-          <div class="chat_list active_chat">
+          <div class="chat_list <%= 'active_chat' if chat.id == @chat.id %>" id="js-chat-link-<%= chat.id %>">
             <div class="chat_people">
               <div class="chat_img">
                 <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
@@ -25,9 +25,9 @@
                 <h5>
                   <%= chat.listing_title(current_user) %>
                   <span class="badge badge-warning"><%= chat.try(:unread_messages_count) %></span>
-                  <span class="chat_date"><%= chat.last_message&.created_at&.strftime('%B %e, %Y') %></span>
+                  <span class="chat_date"><%= chat.try(:last_message_created_at)&.strftime('%e.%m.%y %H:%M') %></span>
                 </h5>
-                <p><%= chat.last_message&.text_content %></p>
+                <p class="last_message"><%= chat.try(:last_text)&.html_safe %></p>
               </div>
             </div>
           </div>
@@ -40,7 +40,7 @@
     <div class="mesgs">
       <div class="msg_history" id="js-msg-history">
 
-        <% @chat.messages.each do |message| %>
+        <% @chat.messages.recent.reverse.each do |message| %>
 
           <% if message.user_id == current_user.id %>
             <div class="outgoing_msg">
